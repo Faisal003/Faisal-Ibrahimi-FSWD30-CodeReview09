@@ -1,0 +1,76 @@
+CREATE DATABASE rent_a_car DEFAULT CHARACTER SET utf8;
+
+CREATE TABLE customers (customer_id int,
+                       first_name varchar(55),
+                       last_name varchar(55),
+                       date_of_birth date,
+                       country varchar(55),
+                       PRIMARY KEY (customer_id));
+
+CREATE TABLE rent_car_company_online (rent_company_id int,
+                                     URL varchar(55),
+                                     fk_customer_id int ,
+                                     PRIMARY KEY(rent_company_id),
+                                     FOREIGN KEY (fk_customer_id) REFERENCES customers(customer_id));
+
+CREATE TABLE registration (registration_id int,
+                          first_name varchar(55),
+                          last_name varchar(55),
+                          date_of_birth date,
+                          date_of_registration date,
+                          country varchar(55),
+                          fk_rent_company_id int,
+                          PRIMARY KEY(registration_id),
+                          FOREIGN KEY (rent_company_id) REFERENCES rent_car_company_online(rent_company_id));
+
+
+CREATE TABLE company (company_id int,
+                     name_of_company varchar(55),
+                     company_address varchar(55),
+                     URL varchar(55),
+                     cars_of_company varchar(55),
+                     fk_registration_id int,
+                     PRIMARY KEY(company_id),
+                     FOREIGN KEY (fk_registration_id) REFERENCES registration(registration_id));
+
+CREATE TABLE client (client_id int,
+                    fk_company_id int,
+                    PRIMARY KEY (client_id),
+                    FOREIGN KEY (client_id) REFERENCES customers(customer_id),
+                    FOREIGN KEY (fk_company_id) REFERENCES company(company_id));
+
+
+CREATE TABLE return_car (return_id int,
+                    start_date date,
+                    end_date date,
+                    cars_of_company varchar (55),
+                    checking_of_car varchar(55),
+                    fk_client_id int,
+                    PRIMARY KEY (return_id),
+                    FOREIGN KEY (fk_client_id) REFERENCES client(client_id));
+
+
+CREATE TABLE agency (agency_id int,
+                    name varchar(55),
+                    return_date date,
+                    end_date date,
+                    fk_return_id int,
+                    PRIMARY KEY(agency_id),
+                    FOREIGN KEY(fk_return_id) REFERENCES return_car(return_id));
+
+
+
+INSERT INTO customers VALUES ('1','Ahmad','Khan','19970502','India');  
+INSERT INTO customers VALUES ('2','ALI','Khan','19960103','India'); 
+INSERT INTO customers VALUES ('3','KUMAR','JANGO','19920702','India'); 
+INSERT INTO customers VALUES ('4','GHAFOOR','HAMIDY','19940407','India'); 
+INSERT INTO customers VALUES ('5','KAREEM','FAIZY','19950609','India'); 
+
+
+
+INSERT INTO rent_car_company_online VALUES ('1','Rasool rent car','1');    
+INSERT INTO rent_car_company_online VALUES ('2','Rasool rent car','2');
+INSERT INTO rent_car_company_online VALUES ('3','Rasool rent car','5');
+
+
+INSERT INTO registration VALUES ('1','Masood','Jan','19970304','20170305','USA','2');                                  
